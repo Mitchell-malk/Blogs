@@ -135,14 +135,12 @@ class AuthController extends Controller
         return $this->json(200, '用户成功退出');
     }
 
+    /**
+     * 获取验证码
+     * @Get  (captcha)
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function code(){
-
-        //return [
-        //    'code' => 101,
-        //    'message' => '请求成功',
-        //    'result' => app('captcha')->create('default', true) //create是生成验证码的方法
-        //    //这里可以直接app('captcha')的原因就是因为在config\app.php中的providers中添加了这一句\Mews\Captcha\CaptchaServiceProvider::class,然后在CaptchaServiceProvider中的register绑定了bind的名字是captcha。
-        //];
         return $this->json(200,'请求成功',app('captcha')->create('default', true));
     }
 }
