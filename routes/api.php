@@ -32,6 +32,8 @@ Route::apiResource('articles', ArticleController::class)->only(['index', 'show']
 Route::post('register', [AuthController::class, 'register']);
 // 登录
 Route::post('login', [AuthController::class, 'login']);
+// 图形验证码
+Route::get('code',[AuthController::class,'code']);
 // 获取文章评论数量
 Route::get('article/comment/{id}',[ArticleController::class,'comments']);
 // 登录保护的路由

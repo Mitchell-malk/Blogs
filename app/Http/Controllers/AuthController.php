@@ -100,6 +100,13 @@ class AuthController extends Controller
         if ($validate->fails()) {
             return $this->json(422, $validate->errors());
         }
+        // 获取用户提交的验证码数据
+        $captcha = $request->input('captcha'); //验证码
+        $key = $request->input('key'); //key
+        // 判断验证码是否正确
+        if (!captcha_api_check($captcha, $key)){
+            return $this->json(400, '验证码错误');
+        }
         $user = User::where('email', $request->email)->first();
         if (!$user || Hash::check($request->password, $user->password) == false) {
             return $this->json(422, '邮箱或密码不正确');
@@ -126,5 +133,16 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
         return $this->json(200, '用户成功退出');
+    }
+
+    public function code(){
+
+        //return [
+        //    'code' => 101,
+        //    'message' => '请求成功',
+        //    'result' => app('captcha')->create('default', true) //create是生成验证码的方法
+        //    //这里可以直接app('captcha')的原因就是因为在config\app.php中的providers中添加了这一句\Mews\Captcha\CaptchaServiceProvider::class,然后在CaptchaServiceProvider中的register绑定了bind的名字是captcha。
+        //];
+        return $this->json(200,'请求成功',app('captcha')->create('default', true));
     }
 }
