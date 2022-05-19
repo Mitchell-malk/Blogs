@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // 查看全部文章
 Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
+// 搜索文章
+Route::get('article/search', [ArticleController::class, 'search']);
 // 注册
 Route::post('register', [AuthController::class, 'register']);
 // 登录

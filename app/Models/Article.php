@@ -72,6 +72,12 @@ class Article extends Model
         return $value ? '已通过' : '待通过';
     }
 
+    // 文章与赞的一对多关系
+    public function zans()
+    {
+        return $this->hasMany('App\Models\Zan');
+    }
+
     /**
      * 为数组 / JSON 序列化准备日期。
      *

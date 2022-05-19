@@ -73,7 +73,7 @@ class CommentController extends Controller
         // 判断是否有权限
         $comment = Comment::find($id);
         if ($comment->user_id != \Auth::id()) {
-            return $this->json(403, '没有权限修改该评论');
+            return $this->json(403, '这不是你的评论无法修改');
         }
         $comment->comment = $data['comment'];
         $comment->save();
@@ -94,7 +94,7 @@ class CommentController extends Controller
         }
         // 判断是否是当前用户的评论
         if ($comment->user_id != \Auth::id()) {
-            return $this->json(403, '没有权限删除该评论');
+            return $this->json(403, '这不是你的评论无法删除');
         }
         $comment->delete();
         return $this->json(200, '删除成功');

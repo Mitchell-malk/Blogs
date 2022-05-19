@@ -305,4 +305,22 @@ class ArticleController extends Controller
 
         return $this->json(200,'数据获取成功',$comments);
     }
+
+    /**
+     * 搜索文章
+     * @Get ("article/search")
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        // 判断关键词是否合法
+        if (empty($keyword)) {
+            return $this->json(422, '关键词不能为空');
+        }
+        // 搜索文章
+        $articles = Article::where('title', 'like', '%' . $keyword . '%')->paginate(10);
+        return $this->json(200, '数据获取成功', $articles);
+    }
 }
