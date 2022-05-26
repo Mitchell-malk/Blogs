@@ -17,7 +17,7 @@ class CreateZansTable extends Migration
             $table->id();
             $table->foreignId('article_id');
             $table->foreignId('user_id');
-            $table->string('zan');
+            $table->string('zan')->nullable();
             $table->timestamps();
         });
     }

@@ -117,7 +117,7 @@ class ArticleController extends Controller
         // 根据文章查找评论
         $comments = Article::find($id)->comments()->get(['comment', 'updated_at']);
         // 根据文章查找评论的用户
-        $comment_user = Article::find($id)->users()->first(['name'])->makeHidden('pivot');
+        $comment_user = Article::find($id)->users()->first(['name']);
         // 合并评论和用户
         $comments = $comments->map(function ($comment) use ($comment_user) {
             $comment->user = $comment_user;
@@ -322,5 +322,27 @@ class ArticleController extends Controller
         // 搜索文章
         $articles = Article::where('title', 'like', '%' . $keyword . '%')->paginate(10);
         return $this->json(200, '数据获取成功', $articles);
+    }
+
+    // 获取文章的点赞数
+    public function zans($id){
+        // 判断id是否合法
+        $id = intval($id);
+        if ($id == 0) {
+            return $this->json(422, 'id不合法');
+        }
+        // 查看文章是否存在
+        $article = Article::find($id);
+        if (!$article) {
+            return $this->json(404, '文章不存在');
+        }
+        // 获取文章的点赞数
+        $zans = $article->zans()->get()->count();
+        // 判断是否有数据
+        if ($zans == 0) {
+            return $this->json(200, '暂无点赞',0);
+        }
+
+        return $this->json(200,'数据获取成功',$zans);
     }
 }

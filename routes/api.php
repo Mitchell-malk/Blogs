@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('captcha',[AuthController::class,'code']);
 // 获取文章评论数量
 Route::get('article/comment/{id}',[ArticleController::class,'comments']);
+// 获取文章点赞数量
+Route::get('article/zan/{id}',[ArticleController::class,'zans']);
 // 登录保护的路由
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('articles', ArticleController::class)->except(['index', 'show']);
@@ -63,6 +66,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('users/password',[UserController::class,'password']);
     // 上传头像
     Route::post('users/avatar',[UserController::class,'upload']);
+    // 点赞
+    Route::post('zans/{id}',[ZanController::class,'createZan']);
+    // 取消点赞
+    Route::delete('zans/{id}',[ZanController::class,'deleteZan']);
 });
 
 
